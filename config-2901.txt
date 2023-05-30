@@ -1,0 +1,60 @@
+no ip domain-lookup
+!
+!
+service password-encryption
+!
+!
+hostname whiteowl
+!
+!
+enable secret 5 $1$mERr$fxvpXidswcm96AM7H3oYY.
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+username whiteowl password 7 08711D1E5849544642
+!
+!
+license udi pid CISCO1941/K9 sn FTX1524AH34-
+!
+!
+spanning-tree mode pvst
+!
+!
+interface GigabitEthernet0/0
+ ip address 192.168.1.1 255.255.255.0
+ duplex auto
+ speed auto
+ no shutdown
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ no shutdown
+!
+interface Vlan1
+ no ip address
+ no shutdown
+!
+!
+banner motd ^C
+************************************************
+YOU DO NOT HAVE PERMISSION TO ENTER
+OR CHANGE ROUTER IN ANY WAY.
+************************************************
+^C
+!
+!
+line con 0
+ transport output ssh
+ password 7 08711D1E5849544642
+ logging synchronous
+ login local
+!
+line aux 0
+!
+line vty 0 4
+ login
