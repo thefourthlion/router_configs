@@ -1,0 +1,46 @@
+/system identity set name=Router0
+
+/interface bridge
+add name=bridge0 
+
+/interface list
+add name=WAN
+add name=LAN
+
+/ip pool
+add name=dhcp-pool0 ranges=192.168.42.10-192.168.42.254
+
+/ip dhcp-server
+add address-pool=dhcp-pool0 interface=bridge0 name=server0
+
+/interface bridge port
+add bridge=bridge0 interface=ether2
+add bridge=bridge0 interface=ether3
+add bridge=bridge0 interface=ether4
+add bridge=bridge0 interface=ether5
+
+/interface list member
+add interface=bridge0 list=LAN9
+add interface=ether1 list=WAN  
+
+/ip address
+add address=192.168.42.1/24 interface=bridge0 network=192.168.42.0
+
+/ip dhcp-client
+add interface=ether1
+
+/ip dhcp-server network
+add address=192.168.42.0/24 dns-server=192.168.42.1 gateway=192.168.42.1
+
+/ip dns
+set allow-remote-requests=yes
+
+/ip dns static
+add address=192.168.42.1 name=dns-lan0
+
+/ip firewall nat
+add action=masquerade chain=srcnat ipsec-policy=out,none out-interface-list=WAN
+
+/system backup save name=init-config
+
+/system reboot
